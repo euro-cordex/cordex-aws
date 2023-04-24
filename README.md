@@ -1,2 +1,2 @@
 # aws
-Manage Open Data Sponsorhip
+Manage Open Data Sponsorhip.
