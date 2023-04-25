@@ -1,2 +1,11 @@
-s3fs
-cryptography=37.0.2
+channels:
+  - conda-forge
+  - nodefaults
+dependencies:
+  - cryptography=37.0.2
+  - s3fs
+  - xarray
+  - dask
+  - netCDF4
+  - pip:
+    - git+https://github.com/larsbuntemeyer/pangeo-forge-esgf.git@cordex-requests
