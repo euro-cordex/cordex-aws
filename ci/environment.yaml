@@ -1,3 +1,4 @@
+name: cordex-aws
 channels:
   - conda-forge
   - nodefaults
