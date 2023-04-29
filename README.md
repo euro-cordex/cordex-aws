@@ -8,5 +8,5 @@ See [AWS-Access notebook](https://wcrp-cordex.github.io/cordex-tutorials/aws-acc
 
 ## Attribution
 
-We thank the awsome AWS Open Data Sponsorship Program for supporting the
+We thank the awesome [AWS Open Data Sponsorship Program](https://aws.amazon.com/de/opendata/open-data-sponsorship-program/) for supporting the
 storage and distribution of our EURO-CORDEX datasets! :rocket:
