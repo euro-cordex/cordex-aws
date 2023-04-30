@@ -11,4 +11,5 @@ dependencies:
   - netCDF4
   - pangeo-forge-recipes=0.9.0
   - pip:
-    - git+https://github.com/larsbuntemeyer/pangeo-forge-esgf.git@cordex-requests
+    #- git+https://github.com/larsbuntemeyer/pangeo-forge-esgf.git@cordex-requests
+    - git+https://github.com/euro-cordex/pangeo-forge-cordex.git
