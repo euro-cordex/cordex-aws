@@ -1,0 +1,11 @@
+name: format
+on:
+  repository_dispatch:
+    types: [format-command]
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run format command
+        run: |
+          echo 'format command executed!'
