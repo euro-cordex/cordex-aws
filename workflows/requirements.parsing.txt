@@ -2,3 +2,4 @@ aiohttp
 requests
 pangeo-forge-cordex
 pangeo-forge-recipes==0.9.0
+esgf-pyclient
