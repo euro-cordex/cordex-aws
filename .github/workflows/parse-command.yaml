@@ -1,0 +1,37 @@
+name: parse 
+on:
+  repository_dispatch:
+    types: [parse-command]
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -l {0}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Fetch all history for all branches and tags.
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+          python -m pip install -f workflows/requirement.parsing.txt 
+      - name: Run format command
+        run: |
+          echo 'Parsing!'
+      - name: Add reaction
+        uses: peter-evans/create-or-update-comment@v2
+        with:
+          token: ${{ secrets.PAT }}
+          repository: ${{ github.event.client_payload.github.payload.repository.full_name }}
+          comment-id: ${{ github.event.client_payload.github.payload.comment.id }}
+          reaction-type: hooray
+      - name: Add comment
+        uses: peter-evans/create-or-update-comment@v2
+        with:
+          issue-number: ${{ github.event.client_payload.github.payload.issue.number }}
+          body: |
+            Done! :sparkles:

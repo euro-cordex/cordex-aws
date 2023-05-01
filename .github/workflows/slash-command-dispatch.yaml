@@ -12,4 +12,5 @@ jobs:
           token: ${{ secrets.PAT }}
           commands: |
             format
+            parse
           reactions: eyes
