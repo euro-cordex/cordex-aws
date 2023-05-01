@@ -18,7 +18,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip setuptools wheel
-          python -m pip install -r workflows/requirement.parsing.txt 
+          python -m pip install -r workflows/requirements.parsing.txt 
       - name: Run format command
         run: |
           echo 'Parsing!'
