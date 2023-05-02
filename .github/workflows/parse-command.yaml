@@ -18,14 +18,14 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip setuptools wheel
-          python -m pip install -r workflows/requirements.parsing.txt
+          #python -m pip install -r workflows/requirements.parsing.txt
       - name: Run parse command
         id: parse
         run: |
           echo 'Parsing!'
           echo "${{ github.event.client_payload.slash_command.args.all }}"
           echo "${{ github.event.client_payload.slash_command.args.iid }}"
-          python workflows/parse-instance-ids.py 'cordex.output.EUR-11.GERICS.*.evaluation.*.*.*.*.tas'
+          #python workflows/parse-instance-ids.py 'cordex.output.EUR-11.GERICS.*.evaluation.*.*.*.*.tas'
       - name: Add reaction
         uses: peter-evans/create-or-update-comment@v2
         with:
