@@ -25,7 +25,7 @@ jobs:
           echo 'Parsing!'
           #python workflows/parse-instance-ids.py 'cordex.output.EUR-11.GERICS.*.evaluation.*.*.*.*.tas' > ids.txt
           #ids=$(cat ids.txt)
-          echo "ids<$EOF" >> "$GITHUB_ENV"
+          echo "ids<<$EOF" >> "$GITHUB_ENV"
           python workflows/parse-instance-ids.py 'cordex.output.EUR-11.GERICS.*.evaluation.*.*.*.*.tas' >> "$GITHUB_ENV"
           echo "$EOF" >> "$GITHUB_ENV"
           my_var="Hello World"
