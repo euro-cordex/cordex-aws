@@ -5,7 +5,8 @@ from pangeo_forge_cordex import parse_instance_ids
 
 
 def write_comment_body(iids):
-    output = f"Found {len(iids)} Dataset(s):\n"
+    output = "\n"
+    output += f"Found {len(iids)} Dataset(s):\n"
     output += "```\n"
     for iid in iids:
         output += f"{iid}\n"
