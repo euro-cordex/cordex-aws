@@ -35,7 +35,7 @@ jobs:
         uses: peter-evans/create-or-update-comment@v2
         with:
           issue-number: ${{ github.event.client_payload.github.payload.issue.number }}
-          body-path: 'body.md'
+          body-file: 'body.md'
           #body: |
             #Done! ${{steps.parse.outputs.my_var}} :sparkles:
             #${{steps.parse.outputs.my_var}}
