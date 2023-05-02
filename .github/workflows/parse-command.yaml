@@ -3,7 +3,7 @@ on:
   repository_dispatch:
     types: [parse-command]
 jobs:
-  format:
+  parse:
     runs-on: ubuntu-latest
     defaults:
       run:
