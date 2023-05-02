@@ -23,12 +23,14 @@ jobs:
         id: parse
         run: |
           echo 'Parsing!'
-          python workflows/parse-instance-ids.py 'cordex.output.EUR-11.GERICS.*.evaluation.*.*.*.*.tas' > ids.txt
-          ids=$(cat ids.txt)
+          #python workflows/parse-instance-ids.py 'cordex.output.EUR-11.GERICS.*.evaluation.*.*.*.*.tas' > ids.txt
+          #ids=$(cat ids.txt)
+          echo "ids<$EOF" >> "$GITHUB_ENV"
+          python workflows/parse-instance-ids.py 'cordex.output.EUR-11.GERICS.*.evaluation.*.*.*.*.tas' >> "$GITHUB_ENV"
+          echo "$EOF" >> "$GITHUB_ENV"
           my_var="Hello World"
           echo "Output $my_var"
           echo "my_var=$my_var" >> $GITHUB_OUTPUT
-          echo "ids=$ids" >> $GITHUB_OUTPUT 
       - name: Add reaction
         uses: peter-evans/create-or-update-comment@v2
         with:
