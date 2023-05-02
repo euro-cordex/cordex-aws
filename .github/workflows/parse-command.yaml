@@ -34,5 +34,6 @@ jobs:
       - name: Add comment
         uses: peter-evans/create-or-update-comment@v3
         with:
+          comment-id: ${{ github.event.client_payload.github.payload.comment.id }}
           issue-number: ${{ github.event.client_payload.github.payload.issue.number }}
           body-path: 'body.md'
