@@ -32,10 +32,10 @@ jobs:
           comment-id: ${{ github.event.client_payload.github.payload.comment.id }}
           reaction-type: hooray
       - name: Add comment
-        uses: peter-evans/create-or-update-comment@v2
+        uses: peter-evans/create-or-update-comment@v3
         with:
           issue-number: ${{ github.event.client_payload.github.payload.issue.number }}
-          body-file: 'body.md'
+          body-path: 'body.md'
           #body: |
             #Done! ${{steps.parse.outputs.my_var}} :sparkles:
             #${{steps.parse.outputs.my_var}}
