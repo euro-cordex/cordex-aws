@@ -1,3 +1,6 @@
+xarray
+fsspec
+pandas
 aiohttp
 requests
 pangeo-forge-cordex
