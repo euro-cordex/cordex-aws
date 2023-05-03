@@ -34,9 +34,9 @@ jobs:
   do-the-job:
     name: Do the job on the runner py${{ matrix.python-version }}
     runs-on: ${{ needs.start-runner.outputs.label }}
-    #defaults:
-    #  run:
-    #    shell: bash -l {0}
+    defaults:
+      run:
+        shell: bash -l {0}
     strategy:
       fail-fast: false
       matrix:
