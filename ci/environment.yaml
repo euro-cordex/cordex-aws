@@ -1,7 +1,6 @@
 name: cordex-aws
 channels:
   - conda-forge
-  - nodefaults
 dependencies:
   - cryptography=37.0.2
   - esgf-pyclient
