@@ -2,7 +2,9 @@ name: do-the-job-2
 on:
   workflow_dispatch:
 jobs:
+
   start-runner:
+  
     name: Start self-hosted EC2 runner
     runs-on: ubuntu-latest
     outputs:
@@ -31,7 +33,9 @@ jobs:
               {"Key": "Name", "Value": "ec2-github-runner"},
               {"Key": "GitHubRepository", "Value": "${{ github.repository }}"}
             ]
+            
   do-the-job:
+  
     name: Do the job on the runner py${{ matrix.python-version }}
     runs-on: ${{ needs.start-runner.outputs.label }}
     defaults:
@@ -44,49 +48,32 @@ jobs:
         python-version: ["3.9", "3.10"]
     needs: start-runner # required to start the main job when the runner is ready
     steps:
-      - name: Hello World
-        run: |
-          echo 'Hello World!'
-          whoami
-          echo "$SHELL"
-          echo "$HOME"
-          which conda
-          conda -V
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0 # Fetch all history for all branches and tags.
-      - name: Set environment variables
-        run: |
-          echo "CONDA_ENV_FILE=ci/environment.yaml" >> $GITHUB_ENV
-          echo "PYTHON_VERSION=${{ matrix.python-version }}" >> $GITHUB_ENV
+    
+      - name: Check out
+        uses: actions/checkout@v3
+
       - name: Install Miniconda
-        #uses: conda-incubator/setup-miniconda@v2
-        uses: mamba-org/provision-with-micromamba@v15
+        uses: conda-incubator/setup-miniconda@v2
         env:
           HOME: /home/ec2-user
 
         with:
-          micromamba-version: 'latest'
-          environment-file: ci/environment.yaml
-          extra-specs: |
-            python=${{ matrix.python-version }}
-        #  activate-environment: ""
-        #  auto-activate-base: true
-        #  miniforge-variant: Mambaforge
-      #- name: Create conda environment
-      #  uses: mamba-org/provision-with-micromamba@v15
-      #  with:
-          #cache-downloads: true
-          #cache-downloads-key: "${{runner.os}}-${{runner.arch}}-py${{matrix.python-version}}-${{hashFiles(env.CONDA_ENV_FILE)}}"
-      #    micromamba-version: 'latest'
-      #    environment-file: ci/environment.yaml
-      #    extra-specs: |
-      #      python=${{ matrix.python-version }}
-      - name: Version info
+          activate-environment: ""
+          auto-activate-base: true
+          miniforge-variant: Mambaforge
+      
+      - name: Install dependencies
         run: |
-          conda info -a
+          mamba env create -n cordex-aws -f ci/environment.yaml
+          conda init
+          
+      - name: List conda environment
+        run: |
+          conda activate cordex-aws
           conda list
+          
   stop-runner:
+  
     name: Stop self-hosted EC2 runner
     needs:
       - start-runner # required to get output from the start-runner job
