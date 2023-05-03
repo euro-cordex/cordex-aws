@@ -51,9 +51,7 @@ jobs:
           echo "$SHELL"
           echo "$HOME"
           which conda
-          which mamba
           conda -V
-          mamba -V
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0 # Fetch all history for all branches and tags.
