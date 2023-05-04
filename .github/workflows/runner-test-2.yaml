@@ -45,7 +45,7 @@ jobs:
       fail-fast: false
       matrix:
         # Bookend python versions
-        python-version: ["3.9", "3.10"]
+        python-version: ["3.9"]
     needs: start-runner # required to start the main job when the runner is ready
     steps:
 
@@ -53,11 +53,6 @@ jobs:
         run: |
           whoami
           ls /home
-          cd
-          pwd
-          ls -la
-          ls -la ..
-          echo $HOME
           
       - name: Install dependencies
         run: |
@@ -75,6 +70,11 @@ jobs:
           environment-file: ci/environment.yaml
           extra-specs: |
             python=${{ matrix.python-version }}
+            
+      - name: Version info
+        run: |
+          conda info -a
+          conda list
             
 #      - name: Install Miniconda
 #        uses: conda-incubator/setup-miniconda@v2
