@@ -44,33 +44,30 @@ jobs:
         python-version: ["3.9", "3.10"]
     needs: start-runner # required to start the main job when the runner is ready
     steps:
-      - name: Hello World
-        run: |
-          echo 'Hello World!'
-          whoami
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0 # Fetch all history for all branches and tags.
-      - name: Set environment variables
-        run: |
-          echo "CONDA_ENV_FILE=ci/environment.yaml" >> $GITHUB_ENV
-          echo "PYTHON_VERSION=${{ matrix.python-version }}" >> $GITHUB_ENV
-          echo "HOME=/home/ubuntu" >> $GITHUB_ENV
-      - uses: conda-incubator/setup-miniconda@v2
+    
+      - name: Check out
+        uses: actions/checkout@v3
+
+      - name: Install Miniconda
+        uses: conda-incubator/setup-miniconda@v2
         env:
           HOME: /home/ubuntu
+
         with:
-          python-version: ${{ matrix.python-version }}
-          miniconda-version: "latest"
-          mamba-version: "*"
-          channels: conda-forge,defaults
-          channel-priority: true
-          activate-environment: cordex-aws
-          environment-file: ci/environment.yaml
-      - name: Version info
+          activate-environment: ""
+          auto-activate-base: true
+          miniforge-variant: Mambaforge
+          
+      - name: Install dependencies
         run: |
-          conda info -a
+          mamba env create -n cordex-aws -f ci/environment.yaml
+          conda init
+          
+      - name: List conda environment
+        run: |
+          conda activate cordex-aws
           conda list
+          
   stop-runner:
     name: Stop self-hosted EC2 runner
     needs:
