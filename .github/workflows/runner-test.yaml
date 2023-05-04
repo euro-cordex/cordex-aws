@@ -59,11 +59,15 @@ jobs:
           miniforge-variant: Mambaforge
           
       - name: Install dependencies
+        env:
+          HOME: /home/ubuntu
         run: |
           mamba env create -n cordex-aws -f ci/environment.yaml
           conda init bash
           
       - name: List conda environment
+        env:
+          HOME: /home/ubuntu
         run: |
           mamba env list
           conda activate cordex-aws
