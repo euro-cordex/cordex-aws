@@ -52,6 +52,7 @@ jobs:
       - name: What is happening?
         run: |
           whoami
+          ls /home
           cd
           pwd
           ls -la
