@@ -22,7 +22,7 @@ jobs:
           mode: start
           github-token: ${{ secrets.PAT }}
           ec2-image-id: ami-007855ac798b5175e # ubuntu server
-          ec2-instance-type: t3.nano
+          ec2-instance-type: t3.medium
           subnet-id: subnet-0b200e65fcb7e2cb3
           security-group-id: sg-003dfa64aa23c1374
           #iam-role-name: github-actions # optional, requires additional permissions
@@ -65,8 +65,11 @@ jobs:
           
       - name: List conda environment
         run: |
-          conda activate cordex-aws
-          conda list
+          mamba env list
+          mamba activate cordex-aws
+          mamba list
+          #conda activate cordex-aws
+          #conda list
           
   stop-runner:
     name: Stop self-hosted EC2 runner
