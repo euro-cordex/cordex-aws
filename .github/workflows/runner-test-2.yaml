@@ -66,6 +66,7 @@ jobs:
         run: |
           mamba env create -n cordex-aws -f ci/environment.yaml
           conda init
+          conda env list
           
       - name: List conda environment
         run: |
