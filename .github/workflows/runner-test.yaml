@@ -61,13 +61,13 @@ jobs:
       - name: Install dependencies
         run: |
           mamba env create -n cordex-aws -f ci/environment.yaml
-          conda init
+          conda init bash
           
       - name: List conda environment
         run: |
           mamba env list
           conda activate cordex-aws
-          mamba list
+          conda list
           #conda activate cordex-aws
           #conda list
           
