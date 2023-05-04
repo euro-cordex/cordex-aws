@@ -55,7 +55,10 @@ jobs:
         run: |
           echo "CONDA_ENV_FILE=ci/environment.yaml" >> $GITHUB_ENV
           echo "PYTHON_VERSION=${{ matrix.python-version }}" >> $GITHUB_ENV
+          echo "HOME=/home/ubuntu" >> $GITHUB_ENV
       - uses: conda-incubator/setup-miniconda@v2
+        env:
+          HOME: /home/ubuntu
         with:
           python-version: ${{ matrix.python-version }}
           miniconda-version: "latest"
