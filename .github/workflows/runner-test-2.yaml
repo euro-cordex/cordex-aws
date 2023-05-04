@@ -62,16 +62,16 @@ jobs:
       - name: Check out
         uses: actions/checkout@v3
         
-      - uses: conda-incubator/setup-miniconda@v2
+      - name: Create conda environment
+        uses: mamba-org/provision-with-micromamba@v15
         env:
-           HOME: /home/ubuntu
+          HOME: /home/ubuntu
         with:
-          python-version: ${{ matrix.python-version }}
-          miniconda-version: "latest"
-          activate-environment: cordex-aws
+          micromamba-version: 'latest'
           environment-file: ci/environment.yaml
-          auto-activate-base: false
-
+          extra-specs: |
+            python=${{ matrix.python-version }}
+            
 #      - name: Install Miniconda
 #        uses: conda-incubator/setup-miniconda@v2
 #        env:
