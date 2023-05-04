@@ -68,7 +68,7 @@ jobs:
         with:
           micromamba-version: 'latest'
           environment-file: ci/environment.yaml
-          activate-environment: cordex-aws
+          #activate-environment: cordex-aws
           extra-specs: |
             python=${{ matrix.python-version }}
             
@@ -76,12 +76,11 @@ jobs:
         env:
           HOME: /home/ubuntu
         run: |
-          which conda
           which mamba
           mamba env list
-          conda env list
-          conda info -a
-          conda list
+          #conda env list
+          #conda info -a
+          #conda list
             
 #      - name: Install Miniconda
 #        uses: conda-incubator/setup-miniconda@v2
