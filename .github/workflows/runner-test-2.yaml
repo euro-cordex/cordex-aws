@@ -76,6 +76,10 @@ jobs:
         env:
           HOME: /home/ubuntu
         run: |
+          which conda
+          which mamba
+          mamba env list
+          conda env list
           conda info -a
           conda list
             
