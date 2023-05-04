@@ -68,6 +68,7 @@ jobs:
         with:
           micromamba-version: 'latest'
           environment-file: ci/environment.yaml
+          activate-environment: cordex-aws
           extra-specs: |
             python=${{ matrix.python-version }}
             
