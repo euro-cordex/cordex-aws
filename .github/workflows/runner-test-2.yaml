@@ -58,6 +58,10 @@ jobs:
           ls -la
           ls -la ..
           echo $HOME
+          
+      - name: Install dependencies
+        run: |
+          sudo apt-get install bzip2
 
       - name: Check out
         uses: actions/checkout@v3
