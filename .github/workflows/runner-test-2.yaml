@@ -72,6 +72,8 @@ jobs:
             python=${{ matrix.python-version }}
             
       - name: Version info
+        env:
+          HOME: /home/ubuntu
         run: |
           conda info -a
           conda list
