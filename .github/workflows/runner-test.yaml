@@ -66,7 +66,7 @@ jobs:
       - name: List conda environment
         run: |
           mamba env list
-          mamba activate cordex-aws
+          conda activate cordex-aws
           mamba list
           #conda activate cordex-aws
           #conda list
