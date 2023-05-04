@@ -60,27 +60,36 @@ jobs:
 
       - name: Check out
         uses: actions/checkout@v3
-
-      - name: Install Miniconda
-        uses: conda-incubator/setup-miniconda@v2
+        
+      - uses: conda-incubator/setup-miniconda@v2
         env:
-          HOME: /home/ubuntu
-
+           HOME: /home/ubuntu
         with:
-          activate-environment: ""
-          auto-activate-base: true
-          miniforge-variant: Mambaforge
+          python-version: ${{ matrix.python-version }}
+          activate-environment: cordex-aws
+          environment-file: ci/environment.yaml
+          auto-activate-base: false
+
+#      - name: Install Miniconda
+#        uses: conda-incubator/setup-miniconda@v2
+#        env:
+#          HOME: /home/ubuntu
+
+#        with:
+#          activate-environment: ""
+#          auto-activate-base: true
+#          miniforge-variant: Mambaforge
       
-      - name: Install dependencies
-        run: |
-          mamba env create -n cordex-aws -f ci/environment.yaml
-          conda init
-          conda env list
+#      - name: Install dependencies
+#        run: |
+#          mamba env create -n cordex-aws -f ci/environment.yaml
+#          conda init
+#          conda env list
           
-      - name: List conda environment
-        run: |
-          conda activate cordex-aws
-          conda list
+#      - name: List conda environment
+#        run: |
+#          conda activate cordex-aws
+#          conda list
           
   stop-runner:
   
