@@ -37,6 +37,8 @@ jobs:
     defaults:
       run:
         shell: bash -l {0}
+    env:
+      HOME: /home/ubuntu
     strategy:
       fail-fast: false
       matrix:
@@ -50,30 +52,21 @@ jobs:
 
       - name: Install Miniconda
         uses: conda-incubator/setup-miniconda@v2
-        env:
-          HOME: /home/ubuntu
-
         with:
           activate-environment: ""
           auto-activate-base: true
           miniforge-variant: Mambaforge
           
       - name: Install dependencies
-        env:
-          HOME: /home/ubuntu
         run: |
           mamba env create -n cordex-aws -f ci/environment.yaml
           conda init bash
           
       - name: List conda environment
-        env:
-          HOME: /home/ubuntu
         run: |
-          mamba env list
+          conda env list
           conda activate cordex-aws
           conda list
-          #conda activate cordex-aws
-          #conda list
           
   stop-runner:
     name: Stop self-hosted EC2 runner
