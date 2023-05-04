@@ -21,7 +21,7 @@ jobs:
         with:
           mode: start
           github-token: ${{ secrets.PAT }}
-          ec2-image-id: ami-00af4730182a2fc6b
+          ec2-image-id: ami-007855ac798b5175e # ubuntu server
           ec2-instance-type: t3.nano
           subnet-id: subnet-0b200e65fcb7e2cb3
           security-group-id: sg-003dfa64aa23c1374
