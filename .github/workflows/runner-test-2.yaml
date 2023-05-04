@@ -66,6 +66,7 @@ jobs:
            HOME: /home/ubuntu
         with:
           python-version: ${{ matrix.python-version }}
+          miniconda-version: "latest"
           activate-environment: cordex-aws
           environment-file: ci/environment.yaml
           auto-activate-base: false
