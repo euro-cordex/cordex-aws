@@ -1,0 +1,7 @@
+aiohttp
+requests
+fsspec
+xarray
+pandas
+pangeo-forge-recipes=0.9.0
+pangeo-forge-cordex
