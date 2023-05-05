@@ -3,5 +3,6 @@ requests
 fsspec
 xarray
 pandas
+esgf-pyclient
 pangeo-forge-recipes==0.9.0
 pangeo-forge-cordex
