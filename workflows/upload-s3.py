@@ -23,8 +23,8 @@ def upload_s3(iid):
         **recipe_kwargs
     )
 
-    recipe_pruned = recipe.copy_pruned()
-    run_function = recipe_pruned.to_function()
+    #recipe_pruned = recipe.copy_pruned()
+    run_function = recipe.to_function()
 
     run_function()
 
