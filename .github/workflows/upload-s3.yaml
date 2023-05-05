@@ -19,7 +19,7 @@ jobs:
           python -m pip install --upgrade pip setuptools wheel
           python -m pip install -r workflows/requirements.upload.txt
       - name: Upload
-        id: uload
+        id: upload
         run: |
           echo 'Uploading!'
           python workflows/upload-s3.py #'${{ github.event.client_payload.slash_command.args.all }}'
