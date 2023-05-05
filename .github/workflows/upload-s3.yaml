@@ -1,0 +1,25 @@
+name: upload S3
+on:
+  repository_dispatch:
+jobs:
+  parse:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -l {0}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Fetch all history for all branches and tags.
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+          python -m pip install -r workflows/requirements.upload.txt
+      - name: Upload
+        id: uload
+        run: |
+          echo 'Uploading!'
+          python workflows/upload-s3.py #'${{ github.event.client_payload.slash_command.args.all }}'
