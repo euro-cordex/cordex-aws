@@ -19,6 +19,9 @@ jobs:
           python -m pip install --upgrade pip setuptools wheel
           python -m pip install -r workflows/requirements.upload.txt
       - name: Upload
+        env:
+          ESGF_USER: ${{ secrets.ESGF_USER }}
+          ESGF_PASSWORD: ${{ secrets.ESGF_PASSWORD }}
         id: upload
         run: |
           echo 'Uploading!'
