@@ -1,6 +1,6 @@
 name: upload S3
 on:
-  repository_dispatch:
+  workflow_dispatch:
 jobs:
   parse:
     runs-on: ubuntu-latest
