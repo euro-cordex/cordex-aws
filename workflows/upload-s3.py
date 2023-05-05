@@ -20,10 +20,10 @@ def upload_s3(iid):
         pattern,
         xarray_concat_kwargs={"join": "exact"},
         subset_inputs={"time": 5},
-        **recipe_kwargs
+        **recipe_kwargs,
     )
 
-    #recipe_pruned = recipe.copy_pruned()
+    # recipe_pruned = recipe.copy_pruned()
     run_function = recipe.to_function()
 
     run_function()
@@ -31,6 +31,8 @@ def upload_s3(iid):
     ds = xr.open_zarr(recipe.target_mapper, consolidated=True)
 
     print(ds)
+    print("-----------------------------------")
+    print(f"Actual size: {ds.nbytes / 1.e6} MB")
 
 
 if __name__ == "__main__":
