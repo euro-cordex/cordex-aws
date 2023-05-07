@@ -1,6 +1,9 @@
 name: upload S3
 on:
   workflow_dispatch:
+    inputs:
+        iid:
+          required: true
 jobs:
   upload:
     runs-on: ubuntu-latest
