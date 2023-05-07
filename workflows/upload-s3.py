@@ -94,7 +94,7 @@ def upload_s3(iid):
     print("running recipe...")
     ds = run_recipe(iid)
 
-    print("uploading to {url}")
+    print(f"uploading to {url}")
     target = fsspec.get_mapper(url)
     ds.to_zarr(target, compute=True)
 
@@ -109,5 +109,5 @@ if __name__ == "__main__":
     # total_size = total_size_ids(ids)
     # pprint.pprint(iids)
     # pprint.pprint(total_size)
-    #iid = "cordex.output.EUR-11.GERICS.ECMWF-ERAINT.evaluation.r1i1p1.REMO2015.v1.mon.tas.v20180813"
+    # iid = "cordex.output.EUR-11.GERICS.ECMWF-ERAINT.evaluation.r1i1p1.REMO2015.v1.mon.tas.v20180813"
     upload_s3(iid)
