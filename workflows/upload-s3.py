@@ -104,10 +104,10 @@ def upload_s3(iid):
 
 
 if __name__ == "__main__":
-    # ids = sys.argv[1].replace("`", "")
+    iid = sys.argv[1].replace("`", "")
     # iids = parse_instance_ids(ids)
     # total_size = total_size_ids(ids)
     # pprint.pprint(iids)
     # pprint.pprint(total_size)
-    iid = "cordex.output.EUR-11.GERICS.ECMWF-ERAINT.evaluation.r1i1p1.REMO2015.v1.mon.tas.v20180813"
+    #iid = "cordex.output.EUR-11.GERICS.ECMWF-ERAINT.evaluation.r1i1p1.REMO2015.v1.mon.tas.v20180813"
     upload_s3(iid)
