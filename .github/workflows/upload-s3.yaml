@@ -27,5 +27,6 @@ jobs:
           ESGF_PASSWORD: ${{ secrets.ESGF_PASSWORD }}
         id: upload
         run: |
-          echo 'Uploading!'
-          python workflows/upload-s3.py #'${{ github.event.client_payload.slash_command.args.all }}'
+          echo "Uploading!"
+          echo "iid: ${{ github.event.inputs.iid }}"
+          python workflows/upload-s3.py ${{ github.event.inputs.iid }}   #'${{ github.event.client_payload.slash_command.args.all }}'
