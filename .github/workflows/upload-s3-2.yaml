@@ -42,10 +42,10 @@ jobs:
     defaults:
       run:
         shell: bash -l {0}
-    #strategy:
-    #  fail-fast: false
-    #  matrix:
-    #    iid: ${{ fromJson(needs.parse.outputs.matrix) }}
+    strategy:
+      fail-fast: false
+      matrix:
+        iid: ${{ fromJson(needs.parse.outputs.matrix) }}
     steps:
       - env:
           matrix: ${{needs.parse.outputs.matrix}}
