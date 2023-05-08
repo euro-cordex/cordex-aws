@@ -28,7 +28,7 @@ jobs:
         run: |
           echo 'Parsing!'
           python workflows/parse-instance-ids.py '${{ github.event.inputs.iid }}'
-          echo "matrix=$(python workflows/parse-instance-ids.py '${{ github.event.inputs.iid }}')" >> $GITHUB_ENV
+          echo "matrix=$(python workflows/parse-instance-ids.py '${{ github.event.inputs.iid }}')" >> $GITHUB_OUTPUT
           echo "${{ env.matrix }}"
           iids=$(python workflows/parse-instance-ids.py '${{ github.event.inputs.iid }}')
           echo $iids
