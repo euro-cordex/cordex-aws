@@ -1,0 +1,67 @@
+name: Search and upload
+on:
+  workflow_dispatch:
+    inputs:
+        iid:
+          required: true
+jobs:
+  parse:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -l {0}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Fetch all history for all branches and tags.
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+          python -m pip install -r workflows/requirements.parsing.txt
+      - name: Run parse command
+        id: parse
+        run: |
+          echo 'Parsing!'
+          echo "matrix=$(python workflows/parse-instance-ids.py ${{ github.event.inputs.iid }})" >> $GITHUB_ENV
+          #python workflows/parse-instance-ids.py ${{ github.event.inputs.iid }}
+    outputs:
+      matrix: ${{ steps.parse.outputs.matrix }}
+  upload:
+    needs: parse
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -l {0}
+    steps:
+      - name: print matrix
+        run: |
+          echo ${{ needs.parse.outputs.matrix }}
+
+#      - name: Configure AWS credentials
+#        uses: aws-actions/configure-aws-credentials@v2
+#        with:
+#          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#          aws-region: ${{ secrets.AWS_REGION }}
+#      - uses: actions/checkout@v3
+#        with:
+#          fetch-depth: 0 # Fetch all history for all branches and tags.
+#      - uses: actions/setup-python@v4
+#        with:
+#          python-version: 3.9
+#      - name: Install dependencies
+#        run: |
+#          python -m pip install --upgrade pip setuptools wheel
+#          python -m pip install -r workflows/requirements.upload.txt
+#      - name: Upload
+#        env:
+#          ESGF_USER: ${{ secrets.ESGF_USER }}
+#          ESGF_PASSWORD: ${{ secrets.ESGF_PASSWORD }}
+#        id: upload
+#        run: |
+#          echo "Uploading!"
+#          echo "iid: ${{ github.event.inputs.iid }}"
+#          python workflows/upload-s3.py ${{ github.event.inputs.iid }}   #'${{ github.event.client_payload.slash_command.args.all }}'
