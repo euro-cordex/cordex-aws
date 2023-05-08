@@ -42,6 +42,10 @@ jobs:
     defaults:
       run:
         shell: bash -l {0}
+    strategy:
+      fail-fast: false
+      matrix:
+        iid: ${{ fromJson(needs.parse.outputs.matrix) }}
     steps:
       - env:
           matrix: ${{needs.parse.outputs.matrix}}
@@ -49,6 +53,8 @@ jobs:
       - name: print matrix
         run: |
           echo "${{ needs.parse.outputs.matrix }}"
+      - name: iid
+        run: echo "{{ matrix.iid }}"
 
 #      - name: Configure AWS credentials
 #        uses: aws-actions/configure-aws-credentials@v2
