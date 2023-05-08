@@ -42,9 +42,6 @@ jobs:
     defaults:
       run:
         shell: bash -l {0}
-    strategy:
-      matrix:
-        version: [10, 12, 14]
     #strategy:
     #  fail-fast: false
     #  matrix:
