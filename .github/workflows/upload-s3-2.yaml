@@ -27,9 +27,13 @@ jobs:
           echo 'Parsing!'
           python workflows/parse-instance-ids.py '${{ github.event.inputs.iid }}'
           echo "matrix=$(python workflows/parse-instance-ids.py '${{ github.event.inputs.iid }}')" >> $GITHUB_ENV
-          echo ${{ env.matrix }}
+          echo "${{ env.matrix }}"
           iids=$(python workflows/parse-instance-ids.py '${{ github.event.inputs.iid }}')
           echo $iids
+      - name: Test
+        run: |
+          echo "${{ env.matrix }}"
+       
     outputs:
       matrix: ${{ steps.parse.outputs.matrix }}
   upload:
@@ -41,7 +45,7 @@ jobs:
     steps:
       - name: print matrix
         run: |
-          echo ${{ needs.parse.outputs.matrix }}
+          echo "${{ needs.parse.outputs.matrix }}"
 
 #      - name: Configure AWS credentials
 #        uses: aws-actions/configure-aws-credentials@v2
