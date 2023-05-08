@@ -45,14 +45,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        #iid: ${{ fromJson(needs.parse.outputs.matrix) }}
-        iid: ${{ needs.parse.outputs.matrix }}
+        dataset: ${{ fromJson(needs.parse.outputs.matrix) }}
     steps:
       - name: print matrix
         run: |
           echo "${{ needs.parse.outputs.matrix }}"
       - name: iid
-        run: echo {{ matrix.iid }}
+        run: echo {{ matrix.dataset }}
 
 #      - name: Configure AWS credentials
 #        uses: aws-actions/configure-aws-credentials@v2
