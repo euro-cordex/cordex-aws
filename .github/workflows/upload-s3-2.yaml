@@ -10,6 +10,8 @@ jobs:
     defaults:
       run:
         shell: bash -l {0}
+    outputs:
+      matrix: ${{ steps.parse.outputs.matrix }}
     steps:
       - uses: actions/checkout@v3
         with:
@@ -34,8 +36,6 @@ jobs:
         run: |
           echo "${{ env.matrix }}"
        
-    outputs:
-      matrix: ${{ steps.parse.outputs.matrix }}
   upload:
     needs: parse
     runs-on: ubuntu-latest
@@ -43,6 +43,9 @@ jobs:
       run:
         shell: bash -l {0}
     steps:
+      - env:
+          matrix: ${{needs.parse.outputs.matrix}}
+        run: echo "$matrix"
       - name: print matrix
         run: |
           echo "${{ needs.parse.outputs.matrix }}"
