@@ -1,4 +1,4 @@
-# AWS
+# CORDEX-AWS
 
 Manage Open Data Sponsorhip.
 
