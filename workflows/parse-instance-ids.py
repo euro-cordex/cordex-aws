@@ -1,4 +1,3 @@
-import pprint
 import sys
 
 from pangeo_forge_cordex import parse_instance_ids, total_size_ids
@@ -23,6 +22,5 @@ if __name__ == "__main__":
     ids = sys.argv[1].replace("`", "")
     iids = parse_instance_ids(ids)
     total_size = total_size_ids(ids)
-    pprint.pprint(iids)
-    pprint.pprint(total_size)
+    print(iids)
     write_comment_body(iids, total_size)
