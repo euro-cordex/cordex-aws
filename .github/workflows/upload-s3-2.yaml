@@ -45,11 +45,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        iid: ${{ fromJson(needs.parse.outputs.matrix) }}
+        #iid: ${{ fromJson(needs.parse.outputs.matrix) }}
+        iid: ${{ needs.parse.outputs.matrix }}
     steps:
-      - env:
-          matrix: ${{needs.parse.outputs.matrix}}
-        run: echo "$matrix"
       - name: print matrix
         run: |
           echo "${{ needs.parse.outputs.matrix }}"
