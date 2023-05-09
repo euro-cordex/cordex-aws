@@ -37,6 +37,7 @@ jobs:
           echo "${{ env.matrix }}"
        
   upload:
+    name: iid ${{ matrix.dataset }}
     needs: parse
     runs-on: ubuntu-latest
     defaults:
