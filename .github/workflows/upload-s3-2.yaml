@@ -4,7 +4,9 @@ on:
     inputs:
         iid:
           required: true
+          
 jobs:
+
   parse:
     runs-on: ubuntu-latest
     defaults:
@@ -32,6 +34,8 @@ jobs:
        
   upload:
     name: upload ${{ matrix.iid }}
+    outputs:
+      iid: ${{ matrix.iid }}
     needs: parse
     runs-on: ubuntu-latest
     defaults:
@@ -51,19 +55,37 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0 # Fetch all history for all branches and tags.
-      - uses: actions/setup-python@v4
-        with:
-          python-version: 3.9
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip setuptools wheel
-          python -m pip install -r workflows/requirements.upload.txt
-      - name: Upload ${{ matrix.iid }}
+      #- uses: actions/setup-python@v4
+      #  with:
+      #    python-version: 3.9
+      #- name: Install dependencies
+      #  run: |
+      #    python -m pip install --upgrade pip setuptools wheel
+      #    python -m pip install -r workflows/requirements.upload.txt
+      #- name: Upload ${{ matrix.iid }}
+      #  env:
+      #    ESGF_USER: ${{ secrets.ESGF_USER }}
+      #    ESGF_PASSWORD: ${{ secrets.ESGF_PASSWORD }}
+      #  id: upload
+      #  run: |
+      #    echo "Uploading!"
+      #    echo "iid: ${{ matrix.iid }}"
+      #    python workflows/upload-s3.py ${{ matrix.iid }}   #'${{ github.event.client_payload.slash_command.args.all }}'
+          
+  catalog:
+    name: update catalog
+    needs: upload
+    if: always() # always run, so we never skip the check
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -l {0}
+    steps:
+      - name: test
         env:
-          ESGF_USER: ${{ secrets.ESGF_USER }}
-          ESGF_PASSWORD: ${{ secrets.ESGF_PASSWORD }}
-        id: upload
+          status: "{{ needs.upload.outputs.iid }}"
         run: |
-          echo "Uploading!"
-          echo "iid: ${{ matrix.iid }}"
-          python workflows/upload-s3.py ${{ matrix.iid }}   #'${{ github.event.client_payload.slash_command.args.all }}'
+          echo $status
+          echo "{{ needs.upload.outputs.iid }}"
+
+
