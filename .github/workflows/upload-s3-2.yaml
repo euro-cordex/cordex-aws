@@ -27,13 +27,7 @@ jobs:
         id: parse
         run: |
           echo 'Parsing!'
-          python workflows/parse-instance-ids.py '${{ github.event.inputs.iid }}'
           echo "matrix=$(python workflows/parse-instance-ids.py '${{ github.event.inputs.iid }}')" >> $GITHUB_OUTPUT
-          echo "${{ env.matrix }}"
-          iids=$(python workflows/parse-instance-ids.py '${{ github.event.inputs.iid }}')
-          echo $iids
-      - name: Test
-        run: |
           echo "${{ env.matrix }}"
        
   upload:
@@ -48,13 +42,6 @@ jobs:
       matrix:
         iid: ${{ fromJson(needs.parse.outputs.matrix) }}
     steps:
-      - name: print matrix
-        run: |
-          echo "${{ needs.parse.outputs.matrix }}"
-      - name: iid
-        env:
-          IID: ${{ matrix.iid }}
-        run: echo $IID
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
@@ -75,7 +62,6 @@ jobs:
         env:
           ESGF_USER: ${{ secrets.ESGF_USER }}
           ESGF_PASSWORD: ${{ secrets.ESGF_PASSWORD }}
-          #IID: ${{ matrix.iid }}
         id: upload
         run: |
           echo "Uploading!"
