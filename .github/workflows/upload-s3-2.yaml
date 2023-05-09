@@ -83,9 +83,9 @@ jobs:
     steps:
       - name: test
         env:
-          status: "{{ needs.upload.outputs.iid }}"
+          status: ${{ needs.upload.outputs.iid }}
         run: |
           echo $status
-          echo "{{ needs.upload.outputs.iid }}"
+          echo ${{ needs.upload.outputs.iid }}
 
 
