@@ -87,5 +87,9 @@ jobs:
         run: |
           echo $status
           echo ${{ needs.upload.outputs.iid }}
+      - name: check the jobs # get the matrix job status and combination info
+        run: |
+          jobstatus=$(curl -X GET -s -u "admin:${{ secrets.PAT }}" https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs | jq ".jobs[] | {job_status: .conclusion, matrix: .name}")
+          echo $jobstatus
 
 
