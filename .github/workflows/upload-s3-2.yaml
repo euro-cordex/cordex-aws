@@ -78,7 +78,7 @@ jobs:
       run:
         shell: bash -l {0}
     outputs:
-      matrix: ${{ steps.check.outputs.iids }}
+      iids: ${{ steps.check.outputs.iids }}
     steps:
       - uses: actions/checkout@v3
         with:
