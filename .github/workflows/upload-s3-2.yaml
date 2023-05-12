@@ -4,7 +4,7 @@ on:
     inputs:
         iid:
           required: true
-          
+
 jobs:
 
   parse:
@@ -31,9 +31,9 @@ jobs:
           echo 'Parsing!'
           echo "matrix=$(python workflows/parse-instance-ids.py '${{ github.event.inputs.iid }}')" >> $GITHUB_OUTPUT
           echo "${{ env.matrix }}"
-       
+
   upload:
-    name: ${{ matrix.iid }}
+    name: upload ${{ matrix.iid }}
     needs: parse
     runs-on: ubuntu-latest
     defaults:
@@ -69,25 +69,66 @@ jobs:
       #    echo "Uploading!"
       #    echo "iid: ${{ matrix.iid }}"
       #    python workflows/upload-s3.py ${{ matrix.iid }}   #'${{ github.event.client_payload.slash_command.args.all }}'
-          
-  catalog:
-    name: update catalog
+  check:
+    name: check
     needs: upload
     if: always() # always run, so we never skip the check
     runs-on: ubuntu-latest
     defaults:
       run:
         shell: bash -l {0}
+    outputs:
+      iids: ${{ steps.check.outputs.iids }}
     steps:
-      - name: test
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Fetch all history for all branches and tags.
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+          python -m pip install -r workflows/requirements.check.txt
+      - name: Run check command
+        id: check
         env:
-          status: ${{ needs.upload.outputs.iid }}
+          PAT: ${{ secrets.PAT }}
         run: |
-          echo $status
-          echo ${{ needs.upload.outputs.iid }}
-      - name: check the jobs # get the matrix job status and combination info
+          echo 'Checking run_id ${{ github.run_id }}'
+          iids=$(python workflows/check.py '${{ github.run_id }}')
+          echo $iids
+          echo "iids=$iids" >> $GITHUB_OUTPUT
+
+  catalog:
+    name: update catalog
+    needs: [upload, check]
+    if: always() # always run, so we never skip the check
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -l {0}
+    steps:
+      - name: Successful uploads
         run: |
-          jobstatus=$(curl -X GET -s -u "admin:${{ secrets.PAT }}" https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs | jq ".jobs[] | {job_status: .conclusion, matrix: .name}")
-          echo $jobstatus
-
-
+          echo ${{ needs.check.outputs.iids }}
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Fetch all history for all branches and tags.
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+          python -m pip install -r workflows/requirements.catalog.txt
+      - name: Update catalog
+        run: |
+          python workflows/update-catalog.py "${{ needs.check.outputs.iids }}"
+          
