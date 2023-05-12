@@ -12,7 +12,6 @@ from pangeo_forge_recipes.patterns import pattern_from_file_sequence
 from pangeo_forge_recipes.recipes import XarrayZarrRecipe
 
 bucket = "euro-cordex"
-df_url_template = f"https://cmip6-pds.s3.amazonaws.com/{bucket}/catalog"
 
 
 def get_url(bucket, prefix="", fs="s3"):
@@ -79,17 +78,13 @@ def upload_s3(iid):
     except Exception:
         warn(f"Catalog does not exist yet: {cat_url}")
         catalog = None
-    print(catalog)
+
     # update catalog
     if catalog is not None:
         cat = pd.concat([catalog, entry], ignore_index=True)
         if cat.duplicated().any():
             duplicates = cat.where(cat.duplicated()).dropna()
             raise Exception(f"Found duplicates in catalog: {duplicates}")
-        catalog = cat
-    else:
-        # start new catalog
-        catalog = entry
 
     print("running recipe...")
     ds = run_recipe(iid)
@@ -97,10 +92,6 @@ def upload_s3(iid):
     print(f"uploading to {url}")
     target = fsspec.get_mapper(url)
     ds.to_zarr(target, compute=True)
-
-    # write catalog
-    print(f"updating catalog at {cat_url}")
-    catalog.to_csv(cat_url, index=False)
 
 
 if __name__ == "__main__":
