@@ -1,3 +1,4 @@
+import os
 import sys
 from os import path as op
 
@@ -34,13 +35,13 @@ def filter_by_success(jobs):
 
 def get_matrix_status(run_id):
     # header = {}
-    # headers = {'Authorization': 'token ' + os.environ["PAT"]}
+    headers = {"Authorization": "token " + os.environ.get("PAT")}
     session = requests.Session()
 
     url = op.join(api_url, "actions", "runs", run_id, "jobs?&per_page=20")
 
     first_page = session.get(
-        url
+        url, headers=headers
     )  # , params=querystring) #, headers=GITHUB_AUTH_HEADER)
     yield first_page
 
@@ -48,14 +49,20 @@ def get_matrix_status(run_id):
     while next_page.links.get("next") is not None:
         next_page_url = next_page.links["next"]["url"]
         next_page = session.get(
-            next_page_url
+            next_page_url, headers=headers
         )  # , params=querystring) #, headers=GITHUB_AUTH_HEADER)
         yield next_page
 
 
-def update_catalog():
-    pass
+def handle_failures(failed):
+    print(f"Jobs failed: {len(failed)}")
 
 
 if __name__ == "__main__":
     run_id = int(sys.argv[1])
+    pages = list(get_matrix_status(run_id))
+    jobs = concat_pages(pages)
+    uploads = get_upload_jobs(jobs)
+    s, f = filter_by_success(uploads)
+    handle_failures(f)
+    print(s)
