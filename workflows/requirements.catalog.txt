@@ -1,0 +1,4 @@
+aiohttp
+requests
+pandas
+pangeo-forge-cordex
