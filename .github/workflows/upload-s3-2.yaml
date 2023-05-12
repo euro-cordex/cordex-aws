@@ -112,7 +112,23 @@ jobs:
       - name: Successful uploads
         run: |
           echo ${{ needs.check.outputs.iids }}
-      - name: check the jobs # get the matrix job status and combination info
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Fetch all history for all branches and tags.
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
+      - name: Install dependencies
         run: |
-          jobstatus=$(curl -X GET -s -u "admin:${{ secrets.PAT }}" https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs | jq ".jobs[] | {job_status: .conclusion, matrix: .name}")
-          echo $jobstatus
+          python -m pip install --upgrade pip setuptools wheel
+          python -m pip install -r workflows/requirements.catalog.txt
+      - name: Update catalog
+        run: |
+          python workflows/update-catalog.py ${{ needs.check.outputs.iids }}
+          
