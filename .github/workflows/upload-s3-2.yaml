@@ -33,7 +33,7 @@ jobs:
           echo "${{ env.matrix }}"
 
   upload:
-    name: ${{ matrix.iid }}
+    name: upload ${{ matrix.iid }}
     needs: parse
     runs-on: ubuntu-latest
     defaults:
