@@ -77,6 +77,8 @@ jobs:
     defaults:
       run:
         shell: bash -l {0}
+    outputs:
+      matrix: ${{ steps.check.outputs.iids }}
     steps:
       - uses: actions/checkout@v3
         with:
@@ -94,24 +96,22 @@ jobs:
           PAT: ${{ secrets.PAT }}
         run: |
           echo 'Checking run_id ${{ github.run_id }}'
-          echo "iids=$(python workflows/check.py '${{ github.run_id }}')" >> $GITHUB_OUTPUT
-          echo "${{ env.iids }}"
+          iids=$(python workflows/check.py '${{ github.run_id }}')
+          echo $iids
+          echo "iids=$iids" >> $GITHUB_OUTPUT
 
   catalog:
     name: update catalog
-    needs: upload
+    needs: [upload, check]
     if: always() # always run, so we never skip the check
     runs-on: ubuntu-latest
     defaults:
       run:
         shell: bash -l {0}
     steps:
-      - name: test
-        env:
-          status: ${{ needs.upload.outputs.iid }}
+      - name: Successful uploads
         run: |
-          echo $status
-          echo ${{ needs.upload.outputs.iid }}
+          echo ${{ needs.check.outputs.iids }}
       - name: check the jobs # get the matrix job status and combination info
         run: |
           jobstatus=$(curl -X GET -s -u "admin:${{ secrets.PAT }}" https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs | jq ".jobs[] | {job_status: .conclusion, matrix: .name}")
