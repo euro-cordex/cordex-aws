@@ -1,4 +1,6 @@
 aiohttp
 requests
 pandas
+fsspec
+s3fs
 pangeo-forge-cordex
