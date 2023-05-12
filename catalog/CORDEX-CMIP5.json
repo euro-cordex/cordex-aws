@@ -14,15 +14,15 @@
       "column_name": "CORDEX_domain"
     },
     {
-      "column_name": "institute_id",
+      "column_name": "institute_id"
     },
-    { 
+    {
       "column_name": "driving_model_id"
     },
     {
       "column_name": "experiment_id"
     },
-    { 
+    {
       "column_name": "member"
     },
     {
@@ -55,7 +55,7 @@
       "experiment_id",
       "member",
       "model_id",
-      "rcm_version_id"
+      "rcm_version_id",
       "frequency"
     ],
     "aggregations": [
