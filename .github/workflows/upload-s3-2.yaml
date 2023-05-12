@@ -130,5 +130,5 @@ jobs:
           python -m pip install -r workflows/requirements.catalog.txt
       - name: Update catalog
         run: |
-          python workflows/update-catalog.py ${{ needs.check.outputs.iids }}
+          python workflows/update-catalog.py "${{ needs.check.outputs.iids }}"
           
