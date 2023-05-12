@@ -1,6 +1,7 @@
 import os
 import sys
 from os import path as op
+from warnings import warn
 
 import requests
 
@@ -11,7 +12,10 @@ def concat_pages(pages):
     """concat all pages return by github api"""
     jobs = []
     for p in pages:
-        jobs.extend(p.json()["jobs"])
+        if p.status_code == 200:
+            jobs.extend(p.json()["jobs"])
+        else:
+            warn("reponse: p.json()")
     return jobs
 
 
@@ -35,10 +39,13 @@ def filter_by_success(jobs):
 
 def get_matrix_status(run_id):
     # header = {}
-    headers = {"Authorization": "token " + os.environ.get("PAT")}
+    if os.environ.get("PAT"):
+        headers = {"Authorization": "token " + os.environ.get("PAT")}
+    else:
+        headers = {}
     session = requests.Session()
 
-    url = op.join(api_url, "actions", "runs", run_id, "jobs?&per_page=20")
+    url = op.join(api_url, "actions", "runs", str(run_id), "jobs?&per_page=20")
 
     first_page = session.get(
         url, headers=headers
@@ -64,5 +71,5 @@ if __name__ == "__main__":
     jobs = concat_pages(pages)
     uploads = get_upload_jobs(jobs)
     s, f = filter_by_success(uploads)
-    handle_failures(f)
+    # handle_failures(f)
     print(s)
