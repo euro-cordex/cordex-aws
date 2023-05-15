@@ -4,6 +4,6 @@ xarray
 intake-esm
 s3fs
 zarr
-matplotlib-base
+matplotlib
 cf_xarray
 jupyter-book
