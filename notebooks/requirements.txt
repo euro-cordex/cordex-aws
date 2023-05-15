@@ -1,0 +1,9 @@
+aiohttp
+fsspec
+xarray
+intake-esm
+s3fs
+zarr
+matplotlib-base
+cf_xarray
+jupyter-book
