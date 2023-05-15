@@ -1,5 +1,7 @@
 # CORDEX-AWS
 
+[![Open In Studio Lab](https://studiolab.sagemaker.aws/studiolab.svg)](https://studiolab.sagemaker.aws/import/github/euro-cordex/cordex-aws/blob/master/notebooks/catalog.ipynb)
+
 Manage Open Data Sponsorhip.
 
 ## How this works
