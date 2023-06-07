@@ -11,3 +11,5 @@ dependencies:
   - intake-esm
   - s3fs
   - fsspec
+  - matplotlib
+  - cartopy
