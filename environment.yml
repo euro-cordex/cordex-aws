@@ -1,0 +1,13 @@
+name: cordex-aws
+channels:
+  - conda-forge
+  - nodefaults
+dependencies:
+  - numpy
+  - xarray
+  - dask
+  - cftime
+  - netCDF4
+  - intake-esm
+  - s3fs
+  - fsspec
