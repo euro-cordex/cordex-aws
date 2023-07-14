@@ -23,9 +23,11 @@ def get_zarr_url(iid, bucket, prefix="", fs="s3"):
 
 
 def get_catalog_url(bucket, project, prefix="catalog"):
-    if project == "CORDEX-Reklies":
-        project = "CORDEX"
-    catalog = project
+    if project in ["CORDEX", "CORDEX-Reklies", "CORDEX-FPSCONV"]:
+        # these go all in the same catalog (they have the same facets)
+        catalog = "CORDEX"
+    else:
+        catalog = project
     return f"{op.join(get_url(bucket, prefix), catalog)}.csv"
 
 
