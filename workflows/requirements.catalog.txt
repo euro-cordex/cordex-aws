@@ -3,4 +3,4 @@ requests
 pandas
 fsspec
 s3fs
-pangeo-forge-cordex
+pangeo-forge-cordex @ git+https://github.com/euro-cordex/pangeo-forge-cordex@main
