@@ -1,0 +1,15 @@
+{
+  "Bake": {
+    "bakery_class": "pangeo_forge_runner.bakery.local.LocalDirectBakery"
+  },
+  "TargetStorage": {
+    "fsspec_class": "s3fs.S3FileSystem",
+    "fsspec_args": {},
+    "root_path": "s3://euro-cordex/test/{job_name}/output"
+  },
+  "InputCacheStorage": {
+    "fsspec_class": "s3fs.S3FileSystem",
+    "fsspec_args": {},
+    "root_path": "s3://euro-cordex/test/input/cache"
+  }
+}
