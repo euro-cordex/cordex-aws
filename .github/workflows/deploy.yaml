@@ -26,7 +26,6 @@ jobs:
           python-version: '3.10'
       - name: Install dependencies
         run: |
-          pip install -r feedstock/requirements.txt
           pip install pangeo-forge-runner
       - name: deploy test recipe
         run: pangeo-forge-runner bake --repo=https://github.com/euro-cordex/cordex-feedstock.git -f=config/local.json --Bake.recipe_id=euro-cordex --Bake.job_name=test --prune 
@@ -48,6 +47,7 @@ jobs:
         with:
           python-version: '3.10'
       - name: Install dependencies
-        run: pip install -r requirements.upload.txt
+        run: |
+          pip install pangeo-forge-runner
       - name: deploy test recipe
         run: pangeo-forge-runner bake --repo=https://github.com/euro-cordex/cordex-feedstock.git -f=config/s3fs.json --Bake.recipe_id=euro-cordex --Bake.job_name=test --prune 
