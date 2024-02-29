@@ -1,0 +1,53 @@
+name: deploy cordex-feedstock
+
+on:
+
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: [ "*" ]
+
+defaults:
+  run:
+    shell: bash -l {0}
+
+jobs:
+
+  deploy-recipe-manually:
+    name: deploy-recipe-manually
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      - name: Install dependencies
+        run: |
+          pip install -r feedstock/requirements.txt
+          pip install pangeo-forge-runner
+      - name: deploy test recipe
+        run: pangeo-forge-runner bake --repo=https://github.com/euro-cordex/cordex-feedstock.git -f=config/local.json --Bake.recipe_id=euro-cordex --Bake.job_name=test --prune 
+  
+  deploy-recipe-manually-s3:
+    name: deploy-recipe-manually-s3
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      - name: Install dependencies
+        run: pip install -r requirements.upload.txt
+      - name: deploy test recipe
+        run: pangeo-forge-runner bake --repo=https://github.com/euro-cordex/cordex-feedstock.git -f=config/s3fs.json --Bake.recipe_id=euro-cordex --Bake.job_name=test --prune 
