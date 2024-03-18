@@ -23,9 +23,7 @@ RUN conda --version
 RUN conda config --add channels conda-forge
 RUN conda config --set channel_priority strict
 
-RUN conda create -n cordex-aws python=3.10 pip
-RUN conda activate cordex-aws 
-RUN pip install dynamic-chunks==0.0.2 \
+RUN pip install dynamic-chunks==0.0.2 pangeo-forge-runner \
     pangeo-forge-cordex==0.3.4 pangeo-forge-recipes==0.10.5 \
     aiohttp requests fsspec s3fs zarr boto3
 
