@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM --platform=linux/amd64 ubuntu:22.04
 ENV PATH="/root/miniconda3/bin:${PATH}"
 ARG PATH="/root/miniconda3/bin:${PATH}"
 
@@ -9,8 +9,7 @@ RUN apt-get install -y software-properties-common
 RUN apt-add-repository -y universe
 RUN apt-get update
 
-RUN apt-get -y install vim git
-RUN apt-get -y install wget
+RUN apt-get -y install wget vim
 
 WORKDIR /cordex-aws/
 
@@ -19,12 +18,13 @@ RUN wget \
     && mkdir /root/.conda \
     && bash Miniconda3-latest-Linux-x86_64.sh -b \
     && rm -f Miniconda3-latest-Linux-x86_64.sh
+
+
 RUN conda --version
 RUN conda config --add channels conda-forge
 RUN conda config --set channel_priority strict
 
-RUN pip install dynamic-chunks==0.0.2 pangeo-forge-runner \
-    pangeo-forge-cordex==0.3.4 pangeo-forge-recipes==0.10.5 \
-    aiohttp requests fsspec s3fs zarr boto3
-
+# Create the environment:
+COPY environment.yml .
+RUN conda env create -f environment.yml
 
